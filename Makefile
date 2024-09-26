@@ -26,6 +26,20 @@ git-checkout:
 	git checkout -b $(BN)
 
 
+.PHONY: blueprint
+blueprint:
+	mkdir -p cmd && echo 'package main\n\nfunc main() {\n}\n' > cmd/main.go
+	mkdir -p app && touch app/app.go
+	mkdir -p input
+	mkdir -p output
+	mkdir -p logs
+	mkdir -p config && touch config/config.yaml
+	mkdir -p internal/logger && touch internal/logger/logger.go
+	mkdir -p internal/store && touch internal/store/store.go
+	mkdir -p internal/controller && touch internal/controller/controller.go
+	mkdir -p internal/processors && touch internal/processors/processors.go && touch internal/processors/images.go && touch internal/processors/prices.go
+
+
 .PHONY: lint
 lint:
 	golangci-lint run ./...
