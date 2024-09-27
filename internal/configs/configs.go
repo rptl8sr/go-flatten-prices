@@ -17,11 +17,15 @@ const (
 	outputDirKey   = "outputDir"
 	sectionDate    = "date"
 	dateKey        = "date"
+	sectionApp     = "app"
+	logLevelKey    = "logLevel"
+	logsDir        = "logs"
 )
 
 type Config struct {
 	InputDir  string
 	OutputDir string
+	LogsDir   string
 	Date      string
 }
 
@@ -51,6 +55,16 @@ func MustLoad() (*Config, error) {
 		return nil, fmt.Errorf("error parsing date: %v", err)
 	}
 
+	logLevelRaw := iniCfg.Section(sectionApp).Key(logLevelKey)
+	if logLevelRaw == nil {
+		return nil, fmt.Errorf("key '%s' not found in section '%s'", logLevelKey, sectionApp)
+	}
+
+	logsDirRaw := iniCfg.Section(sectionApp).Key(logsDir)
+	if logsDirRaw == nil {
+		return nil, fmt.Errorf("key '%s' not found in section '%s'", logsDir, sectionApp)
+	}
+
 	if inputDir.String() == "" {
 		return nil, fmt.Errorf("input dir path is empty")
 	}
@@ -61,6 +75,14 @@ func MustLoad() (*Config, error) {
 
 	if dateRaw.String() == "" {
 		return nil, fmt.Errorf("date is empty")
+	}
+
+	if logLevelRaw.String() == "" {
+		return nil, fmt.Errorf("log level is empty")
+	}
+
+	if logsDirRaw.String() == "" {
+		return nil, fmt.Errorf("logs dir is empty")
 	}
 
 	return &Config{
