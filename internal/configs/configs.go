@@ -2,6 +2,7 @@ package configs
 
 import (
 	"fmt"
+	"log/slog"
 	"path"
 	"time"
 
@@ -9,24 +10,29 @@ import (
 )
 
 const (
-	configDir      = "config"
-	configFilename = "config.ini"
-	dateLayout     = "060102"
-	sectionFolders = "folders"
-	inputDirKey    = "inputDir"
-	outputDirKey   = "outputDir"
-	sectionDate    = "date"
-	dateKey        = "date"
-	sectionApp     = "app"
-	logLevelKey    = "logLevel"
-	logsDir        = "logs"
+	configDir       = "config"
+	configFilename  = "config.ini"
+	dateLayout      = "060102"
+	sectionFolders  = "folders"
+	inputDirKey     = "inputDir"
+	outputDirKey    = "outputDir"
+	sectionDate     = "date"
+	dateKey         = "date"
+	sectionApp      = "app"
+	logLevelKey     = "logLevel"
+	logLevelFileKey = "logLevelFile"
+	logsDirKey      = "logsDir"
+	dbFile          = "dbFile"
 )
 
 type Config struct {
-	InputDir  string
-	OutputDir string
-	LogsDir   string
-	Date      string
+	InputDir     string
+	OutputDir    string
+	LogsDir      string
+	Date         string
+	LogLevel     slog.Level
+	LogLevelFile slog.Level
+	DBFile       string
 }
 
 func MustLoad() (*Config, error) {
@@ -60,9 +66,19 @@ func MustLoad() (*Config, error) {
 		return nil, fmt.Errorf("key '%s' not found in section '%s'", logLevelKey, sectionApp)
 	}
 
-	logsDirRaw := iniCfg.Section(sectionApp).Key(logsDir)
-	if logsDirRaw == nil {
-		return nil, fmt.Errorf("key '%s' not found in section '%s'", logsDir, sectionApp)
+	logLevelFileRaw := iniCfg.Section(sectionApp).Key(logLevelFileKey)
+	if logLevelFileRaw == nil {
+		return nil, fmt.Errorf("key '%s' not found in section '%s'", logLevelFileKey, sectionApp)
+	}
+
+	logsDir := iniCfg.Section(sectionApp).Key(logsDirKey)
+	if logsDir == nil {
+		return nil, fmt.Errorf("key '%s' not found in section '%s'", logsDirKey, sectionApp)
+	}
+
+	dbFileRaw := iniCfg.Section(sectionApp).Key(dbFile)
+	if dbFileRaw == nil {
+		return nil, fmt.Errorf("key '%s' not found in section '%s'", dbFile, sectionApp)
 	}
 
 	if inputDir.String() == "" {
@@ -81,13 +97,37 @@ func MustLoad() (*Config, error) {
 		return nil, fmt.Errorf("log level is empty")
 	}
 
-	if logsDirRaw.String() == "" {
+	logLevel := slog.LevelInfo
+	if logLevelRaw.String() != "" {
+		e := logLevel.UnmarshalText([]byte(logLevelRaw.String()))
+		if e != nil {
+			return nil, fmt.Errorf("invalid log level: %v", err)
+		}
+	}
+
+	logLevelFile := slog.LevelWarn
+	if logLevelFileRaw.String() != "" {
+		e := logLevel.UnmarshalText([]byte(logLevelRaw.String()))
+		if e != nil {
+			return nil, fmt.Errorf("invalid log level: %v", err)
+		}
+	}
+
+	if logsDir.String() == "" {
+		return nil, fmt.Errorf("logs dir is empty")
+	}
+
+	if dbFileRaw.String() == "" {
 		return nil, fmt.Errorf("logs dir is empty")
 	}
 
 	return &Config{
-		InputDir:  inputDir.String(),
-		OutputDir: outputDir.String(),
-		Date:      date.Format(dateLayout),
+		InputDir:     inputDir.String(),
+		OutputDir:    outputDir.String(),
+		Date:         date.Format(dateLayout),
+		LogsDir:      logsDir.String(),
+		LogLevel:     logLevel,
+		LogLevelFile: logLevelFile,
+		DBFile:       dbFileRaw.String(),
 	}, nil
 }
