@@ -1,4 +1,4 @@
-PROJECT := "go-flattern-prices"
+PROJECT := "go-flatten-prices"
 V := "0.0.1"
 USER := rptl8sr
 EMAIL := $(USER)@gmail.com

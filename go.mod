@@ -1,4 +1,4 @@
-module go-flattern-prices
+module go-flatten-prices
 
 go 1.23.1
 

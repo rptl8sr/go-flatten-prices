@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"sync"
 
-	"go-flattern-prices/internal/configs"
-	"go-flattern-prices/internal/logger"
-	"go-flattern-prices/internal/processors"
-	"go-flattern-prices/internal/store"
+	"go-flatten-prices/internal/configs"
+	"go-flatten-prices/internal/logger"
+	"go-flatten-prices/internal/processors"
+	"go-flatten-prices/internal/store"
 )
 
 type controller struct {

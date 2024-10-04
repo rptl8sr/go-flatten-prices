@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"go-flattern-prices/app"
-	"go-flattern-prices/internal/logger"
+	"go-flatten-prices/app"
+	"go-flatten-prices/internal/logger"
 )
 
 func main() {

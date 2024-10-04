@@ -3,7 +3,7 @@ package processors
 import (
 	"errors"
 	"fmt"
-	"go-flattern-prices/internal/logger"
+	"go-flatten-prices/internal/logger"
 	"os"
 	"path/filepath"
 	"strings"
