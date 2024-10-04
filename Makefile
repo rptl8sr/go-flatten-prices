@@ -57,5 +57,5 @@ build-linux:
 
 
 .PHONY: build-win64
-build-linux:
-	GOOS=windows GOARCH=amd64 go build -o $(LOCAL_BIN)/$(PROJECT)_v$(V) ./cmd
+build-win64:
+	GOOS=windows GOARCH=amd64 go build -o $(LOCAL_BIN)/$(PROJECT)_v$(V).exe ./cmd
