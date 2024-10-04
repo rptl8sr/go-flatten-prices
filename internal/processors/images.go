@@ -11,7 +11,7 @@ import (
 
 	"github.com/fogleman/gg"
 
-	"go-flattern-prices/internal/logger"
+	"go-flatten-prices/internal/logger"
 )
 
 const (

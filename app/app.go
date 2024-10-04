@@ -3,10 +3,10 @@ package app
 import (
 	"log"
 
-	"go-flattern-prices/internal/configs"
-	"go-flattern-prices/internal/controller"
-	"go-flattern-prices/internal/logger"
-	"go-flattern-prices/internal/store"
+	"go-flatten-prices/internal/configs"
+	"go-flatten-prices/internal/controller"
+	"go-flatten-prices/internal/logger"
+	"go-flatten-prices/internal/store"
 )
 
 type app struct {
