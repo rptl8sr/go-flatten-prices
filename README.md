@@ -4,7 +4,7 @@ Util to insert price data from SQLite over the background image and save it as a
 
 ### Hot to use
 
-1. Check that fonts/fontName.ttf, config.ini and db.sqlite (with prices) exist in the root project dir
+1. Check that fonts/fontName.ttf, config/config.ini and db.sqlite (with prices) exist in the root project dir
 2. Put paired files (jpg|jpeg|png and csv) with the same names into the 'input' dir
 3. Run app
 4. Check logs in the console and in the dir logs/YYYY-MM-DD_log.txt
